@@ -1,0 +1,161 @@
+21日
+=====
+
+今天是校庆日，也是一个新的起点！那就开始奋斗吧！
+
+sphinx介绍
+-----------
+
+这是一个用sphinx编写的文档。而关于其介绍可参见以下网址：
+
+1. `权威指南 <https://docutils.sourceforge.io/rst.html>`_
+2. `快速入门 <https://www.sphinx-doc.org/en/master/index.html>`_
+
+sphinx的安装
+--------------
+
+基于python环境，需要安装的package包括
+
+.. code-block:: shell-session
+
+    $ pip install sphinx sphinx-intl
+
+..
+
+
+sphinx的主题
+------------
+
+参见 `主题网站 <https://sphinx-themes.org/>`_,最爱 `furo <https://sphinx-themes.org/sample-sites/furo/>`_。
+
+一些配置文件
+------------
+
+requirements.txt
+^^^^^^^^^^^^^^^^^
+
+一般位于/docs/requirements.txt路径下。其中记录了当前sphinx工程的依赖关系。
+
+.. code-block:: shell-session
+
+    sphinx
+    sphinx-markdown-tables==0.0.17
+    sphinx-autoapi
+    sphinx-copybutton
+    sphinx_design
+    recommonmark
+    furo
+
+..
+
+conf.py
+^^^^^^^^
+
+一般位于/docs/source/conf.py路径下，其中记录了当前sphinx工程的主要配置。
+除项目名等信息外，其他的配置内容类似下列内容
+
+.. code-block:: py
+
+    # -- General configuration ---------------------------------------------------
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+    extensions = [
+        'recommonmark',
+        'sphinx.ext.autodoc',
+        'sphinx.ext.todo',
+        'sphinx.ext.viewcode',
+        'sphinx.ext.githubpages',
+        'sphinx.ext.intersphinx']
+
+    templates_path = ['_templates']
+    exclude_patterns = []
+
+    # -- Options for locale output -------------------------------------------------
+
+    # multi-language docs
+    language = 'en'
+    locale_dirs = ['../locales/']   # path is example but recommended.
+    gettext_compact = False  # optional.
+    gettext_uuid = True  # optional
+
+
+    # -- Options for HTML output -------------------------------------------------
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+    html_theme = 'furo'
+    html_static_path = ['_static']
+
+..
+
+
+多语言的sphinx项目
+------------------
+
+sphinx对多语言间的翻译和转换支持比较好，配合一些工具可以将这一功能发挥得更好。
+具体步骤如下：
+
+1. 用英文进行原始项目编写。
+2. 按上述实例设置conf.py文件。
+3. 生成初始翻译文件。
+
+.. code-block:: shell-session
+
+    $ sphinx-build -b gettext . ../build/gettext
+
+..
+
+    若以/docs/source为当前目录，上述命令运行后会生成/docs/build/gettext路径下生成与源文件对应的.pot文件，，这些文件包含了所有需要翻译的文本，如下所示。
+
+.. code-block:: py
+    :lineno-start: 19
+
+    #: ../../index.rst:9
+    msgid "Contents:"
+    msgstr ""
+
+..
+
+4. 初始化翻译，生成中间文件。使用 sphinx-intl 命令初始化翻译。这个命令会根据 .pot 文件生成对应语言的 .po 文件。
+
+.. code-block:: shell-session
+
+    $ sphinx-intl update -p ../build/gettext -l zh_CN
+
+..    
+
+    此步骤会在 locale 目录中生成zh_CN语言的翻译文件的空白.po文件，效果如下。
+
+.. code-block:: py
+    :lineno-start: 22
+
+    #: ../../index.rst:9
+    msgid "Contents:"
+    msgstr ""
+
+..    
+
+5. 对上述中间文件进行编辑，添加对应的翻译。翻译完的效果如下所示：
+
+.. code-block:: py
+    :lineno-start: 22
+
+    #: ../../index.rst:9
+    msgid "Contents:"
+    msgstr "目录"
+
+..
+
+6. 构建多语言文档
+
+.. code-block:: shell-session
+
+    html:
+        sphinx-build -b html -D language=en . ../build/html/en
+        sphinx-build -b html -D language=zh_CN . ../build/html/zh_CN
+
+..
+
+7. 验证和上传。生成多语言文档并上传到 GitHub。然后在 Read the Docs 中配置多语言支持，确保不同语言的文档能够自动构建和更新。
+
+
+
