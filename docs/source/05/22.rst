@@ -1,0 +1,58 @@
+22日
+=====
+
+
+sphinx在Read the Docs上配置
+----------------------------
+
+`Read the Docs <https://readthedocs.org/>`_ 是一个可在线托管文档的网站，同时可以很方便的与github进行协作。
+为使上述项目可通过Read the Docs的在线编译，需要在项目的根目录中配置`.readthedocs.yaml`文件，其内容如下：
+
+.. code-block:: yaml
+
+    # .readthedocs.yaml
+    # Read the Docs configuration file
+    # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+    # Required
+    version: 2
+
+    # Set the OS, Python version and other tools you might need
+    build:
+    os: ubuntu-22.04
+    tools:
+        python: "3.12"
+        # You can also specify other tool versions:
+        # nodejs: "19"
+        # rust: "1.64"
+        # golang: "1.19"
+
+    # Build documentation in the "docs/" directory with Sphinx
+    sphinx:
+    configuration: docs/source/conf.py
+
+    # Optionally build your docs in additional formats such as PDF and ePub
+    formats:
+    - pdf
+
+    # Optional but recommended, declare the Python requirements required
+    # to build your documentation
+    # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
+    python:
+    install:
+    - requirements: docs/requirements.txt
+
+..
+
+Read the Docs的多语言项目管理
+-----------------------------------
+
+1. 由github导入项目的英文版本，设置项目语言为English，完成英文版本配置
+2. 再次导入项目的中文版本
+    1. 创建空白新项目，添加GitHub的webhook
+    2. 项目的仓库链接指向GitHub FedLab仓库
+    3. 设置项目语言为simplified Chinese
+3. 在英文项目中将中文项目设置为子项目
+4. 在英文项目的翻译设置中将子项目设置为翻译版本
+5. 此时可以保证两个语言的项目在Read the Docs上具有相同的网址前缀。此时向GitHub提交新的代码，会同时触发两个文档项目的文档构建，且两个语言版本可以通过文档右下角的language来切换。
+
