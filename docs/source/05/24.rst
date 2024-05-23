@@ -1,0 +1,115 @@
+24日
+=======
+
+使用sphinx为项目添加多语言文档的一般流程
+----------------------------------------------------
+
+1. 在项目根目录下新建docs文件夹，切换至该文件夹。
+2. 创建sphinx空白工程，设置好项目名称，选择语言为英语，选择源码与编译文件分离模式。
+
+.. code-block:: shell-session
+
+    sphinx-quickstart
+
+..
+
+3. 配置/docs/source/conf.py文件如下
+
+.. code-block:: py
+    :lineno-start: 14
+
+    # -- General configuration ---------------------------------------------------
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+    extensions = [
+        'recommonmark',
+        'sphinx.ext.autodoc',
+        'sphinx.ext.todo',
+        'sphinx.ext.viewcode',
+        'sphinx.ext.githubpages',
+        'sphinx.ext.intersphinx']
+
+    templates_path = ['_templates']
+    exclude_patterns = []
+
+    # -- Options for locale output -------------------------------------------------
+
+    # multi-language docs
+    language = 'en'
+    locale_dirs = ['../locales/']   # path is example but recommended.
+    gettext_compact = False  # optional.
+    gettext_uuid = True  # optional
+
+
+    # -- Options for HTML output -------------------------------------------------
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+    html_theme = 'furo'
+    html_static_path = ['_static']
+
+..
+
+4. 配置项目的依赖，位于/docs/requirements.txt路径下。
+
+.. code-block:: shell-session
+
+    sphinx
+    sphinx-markdown-tables==0.0.17
+    sphinx-autoapi
+    sphinx-copybutton
+    sphinx_design
+    recommonmark
+    furo
+
+..
+
+5. 配置readthedocs网站所需的项目配置文件，位于整个项目的根目录下的'.readthedocs.yaml'，即与/docs目录平级。
+
+.. code-block:: yaml
+
+    # .readthedocs.yaml
+    # Read the Docs configuration file
+    # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+    # Required
+    version: 2
+
+    # Set the OS, Python version and other tools you might need
+    build:
+    os: ubuntu-22.04
+    tools:
+        python: "3.12"
+        # You can also specify other tool versions:
+        # nodejs: "19"
+        # rust: "1.64"
+        # golang: "1.19"
+
+    # Build documentation in the "docs/" directory with Sphinx
+    sphinx:
+    configuration: docs/source/conf.py
+
+    # Optionally build your docs in additional formats such as PDF and ePub
+    formats:
+    - pdf
+
+    # Optional but recommended, declare the Python requirements required
+    # to build your documentation
+    # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
+    python:
+    install:
+    - requirements: docs/requirements.txt
+
+..
+
+6. 编写英文文档。
+7. 运行下述命令，生成翻译文件。
+
+.. code-block:: py
+
+    sphinx-build -b gettext ./source ./build/gettext
+    sphinx-intl update -p ./build/gettext -l zh_CN
+
+..
+
+8. 翻译/docs/locales路径下的待翻译文件。
+9. 上传至github，触发readthedocs的文档项目编译。
