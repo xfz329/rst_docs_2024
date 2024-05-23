@@ -1,0 +1,18 @@
+23日
+======
+
+ubuntu相关软件
+---------------
+
+1. gdebi
+2. speedcrunch
+3. gedit
+4. fcitx5 fcitx5-pinyin
+
+物联网相关
+-----------
+
+1. DTU `银尔达 <https://dtu.yinerda.com/>`_
+2. MQTT `巴法 <https://bemfa.com/>`_
+
+
