@@ -1,0 +1,125 @@
+25日
+=======
+
+使用sphinx为python项目生成API及在readthedocs上的配置
+---------------------------------------------------------------
+
+conf.py中的配置
+^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+    :linenos:
+    :emphasize-lines: 6-20,28,34,39,41,47-56,58-63
+
+    # Configuration file for the Sphinx documentation builder.
+    #
+    # For the full list of built-in configuration values, see the documentation:
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+    # -- Path setup --------------------------------------------------------------
+
+    # If extensions (or modules to document with autodoc) are in another directory,
+    # add these directories to sys.path here. If the directory is relative to the
+    # documentation root, use os.path.abspath to make it absolute, like shown here.
+    #
+
+    import os
+    import sys
+
+    current_dir = os.path.dirname(__file__)
+    target_dir = os.path.abspath(os.path.join(current_dir, "../.."))
+    sys.path.insert(0, target_dir)
+
+    import pk4adi
+
+    # -- Project information -----------------------------------------------------
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+
+    project = 'PK4ADI'
+    copyright = '2024, Zhejiang University'
+    author = 'Silence Jiang'
+    release = pk4adi.__version__
+
+    # -- General configuration ---------------------------------------------------
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+    extensions = [
+        'autoapi.extension',
+        'recommonmark',
+        'sphinx.ext.autodoc',
+        'sphinx.ext.todo',
+        'sphinx.ext.viewcode',
+        'sphinx.ext.napoleon',
+        'sphinx.ext.githubpages',
+        'sphinx.ext.intersphinx']
+
+
+    templates_path = ['_templates']
+    exclude_patterns = []
+
+    # configuration for 'autoapi.extension'
+    # autoapi_type = 'python'
+    autoapi_dirs = ['../../pk4adi']
+    # autoapi_template_dir = './_autoapi_templates'
+    autoapi_generate_api_docs = True
+    add_module_names = False  # makes Sphinx render package.module.Class as Class
+
+    # Napoleon settings
+    napoleon_google_docstring = True
+    napoleon_numpy_docstring = True
+
+    # Add more mapping for 'sphinx.ext.intersphinx'
+    intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
+                        'numpy': ('https://numpy.org/doc/stable/', None),
+                        'pandas': ('https://pandas.pydata.org/pandas-docs/dev/', None),
+                        'scipy': ('https://docs.scipy.org/doc/scipy/', None),
+                        }
+
+    # -- Options for locale output -------------------------------------------------
+
+    # multi-language docs
+    language = 'en'
+    locale_dirs = ['../locales/']   # path is example but recommended.
+    gettext_compact = False     # optional.
+    gettext_uuid = True     # optional
+
+    # -- Options for HTML output -------------------------------------------------
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+    html_theme = 'furo'
+    html_static_path = ['_static']
+
+..
+
+在上述文件中：
+
+1. 6-20行将需要生成API的源文件加入路径
+2. 28行将文档版本号与代码版本号关联
+3. 34行使用自动化插件
+4. 39行使用格式插件
+5. 41行使用引用其他工程文档的插件
+6. 47-56行配置自动化插件，包括设置代码源文件的相对路径
+7. 58-63行配置需要引用的其他工程文档的网址
+
+
+
+在readthedocs上的配置
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+为使readthedocs正确生成项目的API，编译之前还需在`.readthedocs.yaml`文件中配置好项目依赖。而依赖一般位于python项目的
+'requirements.txt'文件中。如下：
+
+.. note::
+
+    区分python项目的依赖文件与sphinx项目的依赖文件！
+
+..
+
+.. code-block:: yaml
+    :lineno-start: 29
+
+    python:
+        install:
+        - requirements: docs/requirements.txt
+        - requirements: requirements.txt
+
+..
