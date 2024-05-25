@@ -95,7 +95,7 @@ conf.py中的配置
 
 1. 6-20行将需要生成API的源文件加入路径
 2. 28行将文档版本号与代码版本号关联
-3. 34行使用自动化插件
+3. 34行使用自动化插件，参见 `autoapi文档 <https://sphinx-autoapi.readthedocs.io/en/latest/index.html>`_
 4. 39行使用格式插件
 5. 41行使用引用其他工程文档的插件
 6. 47-56行配置自动化插件，包括设置代码源文件的相对路径
@@ -106,13 +106,7 @@ conf.py中的配置
 在readthedocs上的配置
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 为使readthedocs正确生成项目的API，编译之前还需在`.readthedocs.yaml`文件中配置好项目依赖。而依赖一般位于python项目的
-'requirements.txt'文件中。如下：
-
-.. note::
-
-    区分python项目的依赖文件与sphinx项目的依赖文件！
-
-..
+'requirements.txt'文件中。具体如下：
 
 .. code-block:: yaml
     :lineno-start: 29
@@ -121,5 +115,11 @@ conf.py中的配置
         install:
         - requirements: docs/requirements.txt
         - requirements: requirements.txt
+
+..
+
+.. note::
+
+    区分python项目的依赖文件与sphinx项目的依赖文件！
 
 ..
