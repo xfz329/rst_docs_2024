@@ -4,6 +4,12 @@
 使用sphinx为python项目生成API及在readthedocs上的配置
 ---------------------------------------------------------------
 
+.. note::
+
+    整个项目的根目录中不要有init.py文件，否则API文档不能自动生成!
+
+..
+
 conf.py中的配置
 ^^^^^^^^^^^^^^^^^^^
 
@@ -71,7 +77,7 @@ conf.py中的配置
     # Add more mapping for 'sphinx.ext.intersphinx'
     intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
                         'numpy': ('https://numpy.org/doc/stable/', None),
-                        'pandas': ('https://pandas.pydata.org/pandas-docs/dev/', None),
+                        'pandas': ('https://pandas.pydata.org/docs/', None),
                         'scipy': ('https://docs.scipy.org/doc/scipy/', None),
                         }
 
@@ -121,5 +127,16 @@ conf.py中的配置
 .. note::
 
     区分python项目的依赖文件与sphinx项目的依赖文件！
+
+..
+
+win下设置python的源
+--------------------
+
+命令行下运行下面的命令，结果会写入'C:\Users\Silence\AppData\Roaming\pip\pip.ini'文件中。
+
+.. code-block:: shell-session
+
+    pip config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple/
 
 ..
