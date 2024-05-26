@@ -8,6 +8,7 @@ ubuntu相关软件
 2. speedcrunch
 3. gedit
 4. fcitx5 fcitx5-pinyin
+5. copyq
 
 物联网相关
 -----------
