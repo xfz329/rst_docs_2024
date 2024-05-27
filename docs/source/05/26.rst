@@ -1,0 +1,14 @@
+26日
+=====
+
+配置VSCode自动激活虚拟环境
+---------------------------
+
+为了使得 VS Code 在打开项目时自动使用指定的虚拟环境，可以在工作区（Workspace）的设置中配置：
+
+1. 打开命令面板 Ctrl+Shift+P。
+2. 输入并选择 Preferences: Open Workspace Settings。
+3. 在设置中搜索 Python: Python Path。
+
+设置路径为你的虚拟环境的解释器路径。例如：./venv/bin/python 或 ./venv/Scripts/python.exe。
+这将确保每次打开工作区时，VS Code 都会自动使用指定的虚拟环境。
